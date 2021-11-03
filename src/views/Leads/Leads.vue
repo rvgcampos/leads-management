@@ -12,7 +12,7 @@
         <button @click="cadastrarNovoLead" class="botao-novo-lead">
           Novo Lead (+)
         </button>
-        <span class="usuario-logado"> Bem-vindo {{ loggedUser }} </span>
+        <span class="usuario-logado"> Bem-vindo {{ usuario_logado }} </span>
       </div>
 
       <div class="flex-container-tabela">
@@ -29,13 +29,13 @@
             class="cliente-potencial-body"
             :move="detectMove"
           >
-              <div
-                class="leads leads-cliente-potencial"
-                v-for="lead in leads_potencial"
-                :key="lead.nome"
-              >
-                {{ lead.nome }}
-              </div>
+            <div
+              class="leads leads-cliente-potencial"
+              v-for="lead in leads_potencial"
+              :key="lead.nome"
+            >
+              {{ lead.nome }}
+            </div>
           </draggable>
 
           <draggable
@@ -68,20 +68,6 @@
           </draggable>
         </div>
       </div>
-      <!-- <h1>LEADS POTENCIAIS</h1>
-      <div v-for="lead in leads_potencial" :key="lead.nome">
-        {{ lead.nome }}
-      </div>
-
-      <h1>LEADS CONFIRMADOS</h1>
-      <div v-for="lead in leads_confirmados" :key="lead.nome">
-        {{ lead.nome }}
-      </div>
-
-      <h1>LEADS AGENDADOS</h1>
-      <div v-for="lead in leads_agendados" :key="lead.nome">
-        {{ lead.nome }}
-      </div> -->
     </div>
   </div>
 </template>
@@ -94,13 +80,14 @@ export default {
     draggable,
   },
   computed: {
-    ...mapGetters(["getLeads", "loggedUser"]),
+    ...mapGetters(["getLeads"]),
   },
   data() {
     return {
       leads_potencial: [],
       leads_confirmados: [],
       leads_agendados: [],
+      usuario_logado: "",
     };
   },
   methods: {
@@ -124,8 +111,7 @@ export default {
     },
     sair() {
       this.logout();
-      console.log(this.loggedUser);
-      if (this.loggedUser === undefined) {
+      if (this.loggedUser === "") {
         this.$router.push("/");
       } else {
         console.log("Usuario nao deslogado");
@@ -134,6 +120,8 @@ export default {
   },
   created() {
     const data = localStorage.getItem("leads");
+    const usuarioLogado = localStorage.getItem("usuario_logado");
+    this.usuario_logado = usuarioLogado;
     this.leads_potencial = JSON.parse(data);
   },
 };

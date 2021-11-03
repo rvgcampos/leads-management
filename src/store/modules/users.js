@@ -1,11 +1,11 @@
 const state = {
   users: [],
-  loggedUser: {},
+  loggedUser: "",
   alreadyRegistered: false,
 };
 
 const getters = {
-  loggedUser: (state) => state.loggedUser.usuario,
+  loggedUser: (state) => state.loggedUser,
   getUsers: (state) => state.users,
 };
 
@@ -32,6 +32,7 @@ const actions = {
     } else {
       console.log("entoru no else");
       commit("setUser", user);
+      commit("loggedUser", user.usuario);
       localStorage.setItem("users", JSON.stringify(state.users));
     }
   },
@@ -41,7 +42,7 @@ const actions = {
       commit("setUsers", JSON.parse(data));
     }
   },
-  login({ commit }, user) {
+  login({ commit, state }, user) {
     var CryptoJS = require("crypto-js");
 
     state.users.forEach((userItem) => {
@@ -53,6 +54,8 @@ const actions = {
         commit("setLoggedUser", user.usuario);
       }
     });
+
+    console.log(state.loggedUser);
   },
   logout({ commit }) {
     commit("cleanLoggedUser");
@@ -62,8 +65,14 @@ const actions = {
 const mutations = {
   setUsers: (state, users) => (state.users = users),
   setUser: (state, user) => state.users.push(user),
-  setLoggedUser: (state, user) => (state.loggedUser = user),
-  cleanLoggedUser: (state) => (state.loggedUser = {}),
+  setLoggedUser: (state, user) => {
+    state.loggedUser = user;
+    localStorage.setItem("usuario_logado", user);
+  },
+  cleanLoggedUser: (state) => {
+    state.loggedUser = "";
+    localStorage.setItem("usuario_logado", "");
+  },
   toggleAlreadyRegister: (state) =>
     (state.alreadyRegistered = !state.alreadyRegistered),
 };
