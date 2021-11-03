@@ -10,11 +10,36 @@
           <!-- FORMULÁRIO -->
           <form class="flex-container-form">
             <label>Nome*</label>
-            <input type="text" v-model="nome_lead" />
+            <input
+              type="text"
+              v-model="nome_lead"
+              placeholder="Colocar nome"
+              :class="{ error: errorFormLeadNome.value }"
+            />
+            <span v-if="errorFormLeadNome.value" class="menssagem-erro">{{
+              errorFormLeadNome.message
+            }}</span>
+
             <label>Telefone*</label>
-            <input type="text" v-model="telefone_lead" />
+            <input
+              type="text"
+              v-model="telefone_lead"
+              placeholder="Ex: (79) 99999-8888"
+              :class="{ error: errorFormLeadTelefone.value }"
+            />
+            <span v-if="errorFormLeadTelefone.value" class="menssagem-erro">{{
+              errorFormLeadTelefone.message
+            }}</span>
+
             <label>E-mail*</label>
-            <input type="text" v-model="email_lead" />
+            <input
+              type="text"
+              v-model="email_lead"
+              placeholder="Ex: email@email.com"
+              :class="{ error: errorFormLeadEmail.value }"
+            /><span v-if="errorFormLeadEmail.value" class="menssagem-erro">{{
+              errorFormLeadEmail.message
+            }}</span>
           </form>
           <!-- OPORTUNIDADES -->
           <div class="flex-container-oportunidades">
@@ -64,6 +89,12 @@
             <button @click="novoLead">Salvar</button>
           </div>
         </div>
+
+        <transition name="fade">
+          <div v-if="mostrarMensagemSucesso" class="mensagem-sucesso">
+            Lead incluída com sucesso!
+          </div>
+        </transition>
       </div>
     </div>
   </div>
@@ -81,19 +112,70 @@ export default {
       tipo: "cliente_potencial",
       oportunidades: [],
       btnSelecionaTodos: false,
+      mostrarMensagemSucesso: false,
+      errorFormLeadNome: {
+        value: false,
+        message: "O campo nome  não pode ser nulo",
+      },
+      errorFormLeadTelefone: {
+        value: false,
+        message:
+          "O campo telefone não pode ser nulo e tem que estar escrito corretamente. Ex: (79) 99999-2222",
+      },
+      errorFormLeadEmail: {
+        value: false,
+        message:
+          "O campo nome do e-mail não pode ser nulo e deve ser escrito corretamente",
+      },
     };
   },
   methods: {
     ...mapActions(["addLead"]),
     novoLead() {
-      this.addLead({
-        nome: this.nome_lead,
-        tipo: this.tipo,
-        telefone_lead: this.telefone_lead,
-        email_lead: this.email_lead,
-        oportunidades: this.oportunidades,
-      });
+      const hasNameError = this.nome_lead === "";
+
+      const re_telefone = /^(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})$/;
+      const hasPhoneError =
+        this.telefone_lead === "" || !re_telefone.test(this.telefone_lead);
+
+      const re =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const hasEmailError = this.email_lead === "" || !re.test(this.email_lead);
+
+      if (!hasNameError && !hasPhoneError && !hasEmailError) {
+        this.addLead({
+          nome: this.nome_lead,
+          tipo: this.tipo,
+          telefone_lead: this.telefone_lead,
+          email_lead: this.email_lead,
+          oportunidades: this.oportunidades,
+        });
+
+        this.mostrarMensagemSucesso = true;
+
+        setTimeout(function () {}, 2000);
+        this.$router.push("/leads");
+      }
+
+      if (hasNameError) {
+        this.errorFormLeadNome.value = true;
+      } else {
+        this.errorFormLeadNome.value = false;
+      }
+
+      if (hasPhoneError) {
+        this.errorFormLeadTelefone.value = true;
+      } else {
+        this.errorFormLeadTelefone.value = false;
+      }
+
+      if (hasEmailError) {
+        this.errorFormLeadEmail.value = true;
+      } else {
+        this.errorFormLeadEmail.value = false;
+      }
     },
+
     selecionarTodos() {
       if (!this.btnSelecionaTodos) {
         this.btnSelecionaTodos = true;
@@ -269,12 +351,44 @@ input[type="checkbox"]:after {
 }
 
 input[type="checkbox"]:before {
-  background-color:#696969;
+  background-color: #696969;
 }
 input[type="checkbox"]:checked {
   background-color: #696969;
 }
 input[type="checkbox"]:checked:after {
   display: block;
+}
+
+.error {
+  outline: 2px solid red;
+}
+
+.menssagem-erro {
+  font-size: 0.9rem;
+  color: red;
+}
+
+.mensagem-sucesso {
+  background-color: #454545;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 2px;
+  margin-top: 20px;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-to {
+  opacity: 1;
+}
+
+.fade-enter-active {
+  transition: opacity 2s ease;
 }
 </style>
