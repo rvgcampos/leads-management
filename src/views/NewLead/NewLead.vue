@@ -9,27 +9,31 @@
         <!-- FORMULÁRIO -->
         <form class="flex-container-form">
           <label>Nome*</label>
-          <input type="text" />
+          <input type="text" v-model="nome_lead" />
           <label>Telefone*</label>
-          <input type="text" />
+          <input type="text" v-model="telefone_lead" />
           <label>E-mail*</label>
-          <input type="text" />
+          <input type="text" v-model="email_lead" />
         </form>
         <!-- OPORTUNIDADES -->
         <div class="flex-container-oportunidades">
           <div class="grid-container-oportunidades">
-            <input type="checkbox" />
+            <input type="checkbox" @click="selecionarTodos" />
             <span></span>
-            <input type="checkbox" />
+            <input type="checkbox" value="rpa" v-model="oportunidades" />
             <span>RPA</span>
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              value="produto_digital"
+              v-model="oportunidades"
+            />
             <span>Produto Digital</span>
-            <input type="checkbox" />
+            <input type="checkbox" value="analytics" v-model="oportunidades" />
             <span>Analytics</span>
-            <input type="checkbox" />
+            <input type="checkbox" value="bpm" v-model="oportunidades" />
             <span>BPM</span>
           </div>
-          <button>Salvar</button>
+          <button @click="novoLead">Salvar</button>
         </div>
       </div>
     </div>
@@ -37,10 +41,44 @@
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+
+export default {
+  data() {
+    return {
+      nome_lead: "",
+      telefone_lead: "",
+      email_lead: "",
+      tipo: "cliente_potencial",
+      oportunidades: [],
+      btnSelecionaTodos: false,
+    };
+  },
+  methods: {
+    ...mapActions(["addLead"]),
+    novoLead() {
+      this.addLead({
+        nome: this.nome_lead,
+        tipo: this.tipo,
+        telefone_lead: this.telefone_lead,
+        email_lead: this.email_lead,
+        oportunidades: this.oportunidades,
+      });
+    },
+    selecionarTodos() {
+      if (!this.btnSelecionaTodos) {
+        this.btnSelecionaTodos = true;
+        this.oportunidades = ["rpa", "produto_digital", "analytics", "bpm"];
+      } else {
+        this.oportunidades = [];
+        this.btnSelecionaTodos = false;
+      }
+    },
+  },
+};
 </script>
 
-<style>
+<style scoped>
 .container {
   width: 800px;
   margin: 0 auto;

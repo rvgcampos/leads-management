@@ -11,6 +11,10 @@ const getters = {
 
 const actions = {
   addUser({ commit, state }, user) {
+    const userPassword = user.password;
+    var CryptoJS = require("crypto-js");
+    user.password = CryptoJS.AES.encrypt(userPassword, "123#$%").toString();
+    user.confirmPassword = user.password;
     if (state.users.length !== 0) {
       console.log("entoru no if");
       state.users.forEach((userItem) => {
@@ -38,11 +42,14 @@ const actions = {
     }
   },
   login({ commit }, user) {
+    var CryptoJS = require("crypto-js");
+
     state.users.forEach((userItem) => {
-      if (
-        userItem.usuario === user.usuario &&
-        userItem.password === user.password
-      ) {
+      const decryptData = CryptoJS.AES.decrypt(
+        userItem.password,
+        "123#$%"
+      ).toString(CryptoJS.enc.Utf8);
+      if (userItem.usuario === user.usuario && decryptData === user.password) {
         commit("setLoggedUser", user);
       }
     });

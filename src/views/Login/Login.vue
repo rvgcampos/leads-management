@@ -1,63 +1,98 @@
 <template>
-  <div class="container">
-    <!-- Formulário Cadastro -->
-    <form @submit.prevent="addUserLocalStorage" v-if="registerForm">
-      <label> Usuário*</label>
-      <input
-        type="text"
-        v-model.trim="usuario"
-        placeholder="Coloque o seu usuário"
-        :class="{ error: errorForm }"
-      />
-      <label> Senha*</label>
-      <input
-        type="password"
-        v-model.trim="password"
-        placeholder="Sua senha"
-        :class="{ error: errorForm }"
-      />
-      <label> Confirmação Senha*</label>
-      <input
-        type="password"
-        v-model.trim="confirmPassword"
-        placeholder="Confirme sua Senha"
-        :class="{ error: errorForm }"
-      />
-      <span id="asterisco">(*) - Campo Obrigatório</span>
-      <button>Registrar</button>
-    </form>
+  <div>
+    <div class="container">
+      <!-- Formulário Cadastro -->
+      <div class="formulario">
+        <Register v-if="registerForm" />
 
-    <!-- Formulário Login -->
-    <form @submit.prevent="loginForm" v-else>
-      <label v>Usuário</label>
-      <input type="text" v-model="loginUser" />
-      <!-- <i class="far fa-trash-alt"></i> -->
+        <!-- Formulário Login -->
+        <form @submit.prevent="loginForm" v-else>
+          <label v>Usuário <sup>*</sup></label>
+          <input
+            type="text"
+            v-model="loginUser"
+            placeholder="Coloque o seu usuário"
+            :class="{
+              error: errorFormUser.value,
+            }"
+          />
+          <span
+            v-if="loginUser.length === 0"
+            class="posiciona-icone posiciona-icone-desativado"
+          >
+            <i class="far fa-trash-alt"></i>
+            <span v-if="errorFormUser.value" class="messagem-erro">{{
+              errorFormUser.message
+            }}</span>
+          </span>
 
-      <label v>Senha</label>
-      <input type="password" v-model="passwordUser" />
-      <button>Logar</button>
-      <span class="cadastre-se"
-        >Não tem conta?
-        <a @click="registerForm = !registerForm">Cadastre-se</a>
-      </span>
-    </form>
+          <span v-else class="posiciona-icone posiciona-icone-ativado">
+            <i @click="cleanInputNameUser" class="far fa-trash-alt"></i>
+          </span>
+
+          <label v>Senha <sup>*</sup></label>
+          <input
+            :type="typeInput"
+            v-model="passwordUser"
+            placeholder="Sua senha"
+            :class="{ error: errorFormPassword.value }"
+          />
+          <span
+            v-if="passwordUser.length === 0"
+            class="posiciona-icone posiciona-icone-desativado"
+          >
+            <i class="fas fa-lock-open"></i>
+            <span v-if="errorFormPassword.value" class="menssagem-erro">{{
+              errorFormPassword.message
+            }}</span>
+          </span>
+          <span v-else class="posiciona-icone posiciona-icone-ativado">
+            <i @click="changeTypeInputPassword" class="fas fa-lock-open"></i>
+          </span>
+
+          <span id="asterisco-obrigatorio">(*) - Campo Obrigatório</span>
+
+          <BotaoCadastrarLogar />
+
+          <span class="cadastre-se"
+            >Não tem conta?
+            <a @click="registerForm = !registerForm">Cadastre-se</a>
+          </span>
+        </form>
+      </div>
+
+      <!-- Imagem -->
+      <div class="imagem-lateral"></div>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import Register from "./components/Register.vue";
+import BotaoCadastrarLogar from "../../global_components/BotaoCadastrarLogar.vue";
+
 export default {
   name: "Login",
+  components: {
+    Register,
+    BotaoCadastrarLogar,
+  },
   data() {
     return {
-      // ...mapGetters(["loggedUser"]),
-      usuario: "",
-      password: "",
-      confirmPassword: "",
       loginUser: "",
       passwordUser: "",
       registerForm: false,
-      errorForm: false,
+      errorFormUser: {
+        value: false,
+        message: "O campo usuário não pode ser nulo",
+      },
+      errorFormPassword: {
+        value: false,
+        message:
+          "O campo senha não pode ser nulo e tem que ter mais de 8 caracteres",
+      },
+      typeInput: "password",
     };
   },
   computed: {
@@ -65,146 +100,44 @@ export default {
   },
   methods: {
     ...mapActions(["addUser", "login", "getUsers"]),
-    hasSpecialCaractere(password) {
-      const DIGITS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-      let digits_bool = false;
-      const LOCASE_CHARACTERS = [
-        "a",
-        "b",
-        "c",
-        "d",
-        "e",
-        "f",
-        "g",
-        "h",
-        "i",
-        "j",
-        "k",
-        "m",
-        "n",
-        "o",
-        "p",
-        "q",
-        "r",
-        "s",
-        "t",
-        "u",
-        "v",
-        "w",
-        "x",
-        "y",
-        "z",
-      ];
-      let locase_bool = false;
 
-      const UPCASE_CHARACTERS = [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "M",
-        "N",
-        "O",
-        "p",
-        "Q",
-        "R",
-        "S",
-        "T",
-        "U",
-        "V",
-        "W",
-        "X",
-        "Y",
-        "Z",
-      ];
-      let upcase_bool = false;
-
-      const SYMBOLS = [
-        "@",
-        "#",
-        "$",
-        "%",
-        "=",
-        ":",
-        "?",
-        ".",
-        "/",
-        "|",
-        "~",
-        ">",
-        "*",
-        "(",
-        ")",
-        "<",
-      ];
-      let symbols_bool = false;
-
-      DIGITS.forEach((item) => {
-        if (password.indexOf(item) > -1) {
-          digits_bool = true;
-        }
-      });
-
-      LOCASE_CHARACTERS.forEach((item) => {
-        if (password.indexOf(item) > -1) {
-          locase_bool = true;
-        }
-      });
-
-      UPCASE_CHARACTERS.forEach((item) => {
-        if (password.indexOf(item) > -1) {
-          upcase_bool = true;
-        }
-      });
-
-      SYMBOLS.forEach((item) => {
-        if (password.indexOf(item) > -1) {
-          symbols_bool = true;
-        }
-      });
-
-      return digits_bool && locase_bool && upcase_bool && symbols_bool;
-    },
-    addUserLocalStorage() {
-      if (
-        this.usuario !== "" &&
-        this.password !== "" &&
-        this.confirmPassword !== "" &&
-        this.password.length >= 8 &&
-        this.password === this.confirmPassword &&
-        this.hasSpecialCaractere(this.password)
-      ) {
-        this.addUser({
-          usuario: this.usuario,
-          password: this.password,
-          confirmPassword: this.confirmPassword,
-        });
-      } else {
-        this.errorForm = true;
-      }
-    },
     loginForm() {
-      if (this.loginUser !== "" && this.passwordUser !== "") {
+      if (
+        this.loginUser !== "" &&
+        this.passwordUser !== "" &&
+        this.passwordUser.length >= 8
+      ) {
         this.login({
           usuario: this.loginUser,
           password: this.passwordUser,
         });
-      } else {
-        return;
       }
-      console.log(this.loggedUser.usuario);
+      if (this.loginUser === "") {
+        this.errorFormUser.value = true;
+      } else {
+        this.errorFormUser.value = false;
+      }
+
+      if (this.passwordUser === "" && this.passwordUser.length < 8) {
+        this.errorFormPassword.value = true;
+      } else {
+        this.errorFormPassword.value = false;
+      }
 
       if (this.loggedUser.usuario !== undefined) {
         this.$router.push("/leads");
       } else {
         console.log("Usuario nao logado");
+      }
+    },
+    cleanInputNameUser() {
+      this.loginUser = "";
+    },
+    changeTypeInputPassword() {
+      if (this.typeInput == "password") {
+        this.typeInput = "text";
+      } else {
+        this.typeInput = "password";
       }
     },
   },
@@ -216,77 +149,109 @@ export default {
 </script>
 
 <style scoped>
-#asterisco {
-  color: red;
-  font-weight: bold;
-  margin-top: 10px;
-}
 .container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100vh;
+  background-color: #e3e5e8;
+}
+
+.imagem-lateral {
+  background-image: url("~@/assets/background1.jpg");
+  background-size: cover;
+  width: 50vw;
+  height: 100vh;
+}
+
+.formulario {
+  flex-basis: 50vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
-  position: relative;
-  z-index: 1;
-}
-
-.container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.4;
-  z-index: -1;
-  background: url("https://image.freepik.com/vetores-gratis/copie-o-fundo-digital-dos-circuitos-azuis-do-espaco_23-2148821699.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   row-gap: 10px;
+  width: 300px;
 }
 
 input {
   padding: 10px;
   border: 0;
-  box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
   width: 300px;
+  background-color: #e3e5e8;
   font-family: sans-serif;
   font-size: 16px;
+}
+
+input:focus {
+  outline: none;
 }
 
 label {
-  color: #3081bf;
-  font-size: 20px;
+  color: #232324;
+  font-size: 0.9rem;
+  font-weight: 700;
   font-family: sans-serif;
 }
 
-button {
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 20px;
-  color: #fff;
-  background: #3081bf;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  cursor: pointer;
+label sup {
+  font-size: 1.1rem;
+  position: relative;
+  top: 5px;
 }
 
 .cadastre-se a {
-  color: #3081bf;
+  color: #77777a;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .error {
-  border: 1px solid red;
+  outline: 2px solid red;
+}
+
+.posiciona-icone {
+  position: relative;
+}
+
+.posiciona-icone-desativado i {
+  position: absolute;
+  top: -37px;
+  right: 15px;
+  cursor: pointer;
+  color: #edbcb9;
+  opacity: 1;
+}
+
+.posiciona-icone-ativado i {
+  position: absolute;
+  top: -37px;
+  right: 15px;
+  cursor: pointer;
+  color: red;
+  opacity: 1;
+}
+
+#asterisco {
+  color: #edbcb9;
+  font-weight: bold;
+  margin-top: 10px;
+}
+#asterisco-obrigatorio {
+  color: red;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.menssagem-erro {
+  font-size: 0.9rem;
+  color: red;
 }
 </style>

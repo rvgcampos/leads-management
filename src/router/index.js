@@ -5,7 +5,7 @@ import NewLead from "../views/NewLead/NewLead";
 import Vue from "vue";
 import Router from "vue-router";
 
-// import store from "../store/index";
+import store from "../store/index";
 
 Vue.use(Router);
 
@@ -32,6 +32,16 @@ const router = new Router({
       redirect: "/",
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  console.log(store.state.users.loggedUser.usuario === undefined);
+  console.log(to);
+  if (store.state.users.loggedUser.usuario === undefined && to.path !== "/") {
+    next("/");
+  } else {
+    next();
+  }
 });
 
 export default router;
