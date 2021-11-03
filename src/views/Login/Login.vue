@@ -52,7 +52,7 @@
 
           <span id="asterisco-obrigatorio">(*) - Campo Obrigatório</span>
 
-          <BotaoCadastrarLogar />
+          <BotaoCadastrarLogar funcao="Logar" />
 
           <span class="cadastre-se"
             >Não tem conta?
@@ -111,6 +111,7 @@ export default {
           usuario: this.loginUser,
           password: this.passwordUser,
         });
+        this.$router.push("/leads");
       }
       if (this.loginUser === "") {
         this.errorFormUser.value = true;
@@ -122,12 +123,6 @@ export default {
         this.errorFormPassword.value = true;
       } else {
         this.errorFormPassword.value = false;
-      }
-
-      if (this.loggedUser.usuario !== undefined) {
-        this.$router.push("/leads");
-      } else {
-        console.log("Usuario nao logado");
       }
     },
     cleanInputNameUser() {

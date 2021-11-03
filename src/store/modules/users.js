@@ -5,7 +5,7 @@ const state = {
 };
 
 const getters = {
-  loggedUser: (state) => state.loggedUser,
+  loggedUser: (state) => state.loggedUser.usuario,
   getUsers: (state) => state.users,
 };
 
@@ -50,7 +50,7 @@ const actions = {
         "123#$%"
       ).toString(CryptoJS.enc.Utf8);
       if (userItem.usuario === user.usuario && decryptData === user.password) {
-        commit("setLoggedUser", user);
+        commit("setLoggedUser", user.usuario);
       }
     });
   },

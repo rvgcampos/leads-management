@@ -1,55 +1,74 @@
 <template>
-  <div>
+  <div class="fundo">
     <div class="container-column">
-      <div class="container">
-        <h1>Leads</h1>
-        <a @click="sair">Sair</a>
+      <!-- Head da página -->
+      <div class="flex-container-head">
+        <div class="imagem-head"></div>
+        <h1 class="head-titulo">Painel de Leads</h1>
+        <button class="botao-sair" @click="sair">Sair</button>
       </div>
-      <button>Novo Lead (+)</button>
+
+      <div class="flex-novo-lead">
+        <button @click="cadastrarNovoLead" class="botao-novo-lead">
+          Novo Lead (+)
+        </button>
+        <span class="usuario-logado"> Bem-vindo {{ loggedUser }} </span>
+      </div>
 
       <div class="flex-container-tabela">
         <div class="flex-container-tabela-head">
-          <div class="box1">Cliente em Pontecial</div>
-          <div class="box2">Dados Confirmados</div>
-          <div class="box3">Reunião Agendada</div>
+          <div class="cliente_potencial">Cliente em Pontecial</div>
+          <div class="dados_confirmados">Dados Confirmados</div>
+          <div class="reuniao_agendada">Reunião Agendada</div>
         </div>
 
         <div class="flex-container-tabela-body">
           <draggable
             v-model="leads_potencial"
             group="tasks"
-            class="borda-vermelha"
+            class="cliente-potencial-body"
             :move="detectMove"
           >
-            <div v-for="lead in leads_potencial" :key="lead.nome">
-              {{ lead.nome }}
-            </div>
+              <div
+                class="leads leads-cliente-potencial"
+                v-for="lead in leads_potencial"
+                :key="lead.nome"
+              >
+                {{ lead.nome }}
+              </div>
           </draggable>
 
           <draggable
             v-model="leads_confirmados"
             group="tasks"
-            class="borda-azul"
+            class="dados-confirmados-body"
             :move="detectMove"
           >
-            <div v-for="lead in leads_confirmados" :key="lead.nome">
+            <div
+              class="leads leads-dados-confirmados"
+              v-for="lead in leads_confirmados"
+              :key="lead.nome"
+            >
               {{ lead.nome }}
             </div>
           </draggable>
           <draggable
             v-model="leads_agendados"
             group="tasks"
-            class="borda-verde"
+            class="reuniao-agendada-body"
             :move="detectMove"
           >
-            <div v-for="lead in leads_agendados" :key="lead.nome">
+            <div
+              class="leads leads-reuniao-agendada"
+              v-for="lead in leads_agendados"
+              :key="lead.nome"
+            >
               {{ lead.nome }}
             </div>
           </draggable>
         </div>
       </div>
-
-      <h1>LEADS POTENCIAIS</h1>
+      <!-- <h1>LEADS POTENCIAIS</h1>
       <div v-for="lead in leads_potencial" :key="lead.nome">
         {{ lead.nome }}
       </div>
@@ -62,7 +81,7 @@
       <h1>LEADS AGENDADOS</h1>
       <div v-for="lead in leads_agendados" :key="lead.nome">
         {{ lead.nome }}
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -75,27 +94,10 @@ export default {
     draggable,
   },
   computed: {
-    ...mapGetters(["getLeads"]),
+    ...mapGetters(["getLeads", "loggedUser"]),
   },
   data() {
     return {
-      leads: [
-        {
-          nome: "Org Internacionais",
-          tipo: "cliente_potencial",
-          oportunidades: ["RPA", "PRODUTO DIGITAL"],
-        },
-        {
-          nome: "Ind Farm LTDA",
-          tipo: "dados_confirmados",
-          oportunidades: ["RPA", "PRODUTO DIGITAL"],
-        },
-        {
-          nome: "Musc. Sound Live Cmp",
-          tipo: "cliente_potencial",
-          oportunidades: ["RPA", "PRODUTO DIGITAL"],
-        },
-      ],
       leads_potencial: [],
       leads_confirmados: [],
       leads_agendados: [],
@@ -103,6 +105,9 @@ export default {
   },
   methods: {
     ...mapActions(["logout"]),
+    cadastrarNovoLead() {
+      this.$router.push("/new_lead");
+    },
     detectMove(evt) {
       if (
         (evt.from._prevClass === "borda-vermelha" &&
@@ -135,26 +140,199 @@ export default {
 </script>
 
 <style scoped>
-.borda-vermelha {
+.fundo {
+  background-color: #e3e5e8;
+  height: 100vh;
+}
+
+.container-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #e3e5e8;
+  margin: 0 auto;
+  width: 800px;
+  height: 100%;
+}
+
+.flex-container-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  height: 100px;
+  width: 800px;
+  background-color: #fafafa;
+  border-radius: 20px;
+  margin-top: 20px;
+  padding-right: 10px;
+}
+
+.head-titulo {
+  font-size: 2rem;
+  font-weight: 800;
+  font-family: monospace;
+}
+
+.botao-sair {
+  border-radius: 10px;
+  background-color: #77777a;
+  color: white;
+  width: 70px;
+}
+
+.botao-sair:hover {
+  background-color: #878686;
+}
+
+.imagem-head {
+  width: 300px;
+  height: 100%;
+  background-image: url("~@/assets/elogroup.jpg");
+  background-size: cover;
+  background-color: red;
+}
+
+.flex-novo-lead {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.usuario-logado {
+  font-size: 1.3rem;
+  font-family: monospace;
+}
+
+button {
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 20px;
+  color: #fff;
+  width: 200px;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.botao-novo-lead {
+  background: #77777a;
+}
+
+.botao-novo-lead:hover {
+  background: #878686;
+}
+
+.cliente_potencial {
+  background: #e34d4b;
+  width: 200px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f2f2f2;
+  font-weight: bold;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.dados_confirmados {
+  background: #4350e6;
+  width: 200px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f2f2f2;
+  font-weight: bold;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.reuniao_agendada {
+  background: #61c77d;
+  width: 200px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #f2f2f2;
+  font-weight: bold;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.cliente-potencial-body {
   border: 1px solid red;
   width: 200px;
-  height: 100px;
+  height: 100%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  flex-direction: colum;
+  justify-content: center;
+  align-content: flex-start;
+  flex-wrap: wrap;
 }
-.borda-azul {
+.dados-confirmados-body {
   border: 1px solid blue;
   width: 200px;
   height: 100px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  flex-direction: colum;
+  justify-content: center;
 }
-.borda-verde {
+.reuniao-agendada-body {
   border: 1px solid green;
   width: 200px;
   height: 100px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  display: flex;
+  flex-direction: colum;
+  justify-content: center;
 }
+
+.leads {
+  height: 50px;
+  border-radius: 10px;
+  width: 170px;
+  margin: 15px;
+  display: flex;
+  flex-direction: colum;
+  justify-content: center;
+  align-items: center;
+  color: #3d3d3d;
+}
+
+.leads-cliente-potencial {
+  background-color: #facfcf;
+}
+
+.leads-dados-confirmados {
+  background-color: #c7d0f0;
+}
+
+.leads-reuniao-agendada {
+  background-color: #c4f2c7;
+}
+
 .flex-container-tabela {
   display: flex;
   flex-direction: column;
   width: 800px;
-  margin-top: 10px;
+  margin-top: 20px;
+  background-color: #fafafa;
+  border-radius: 20px;
+  padding: 20px;
+  height: 70%;
 }
 
 .flex-container-tabela-head {
@@ -167,53 +345,6 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 100px;
-}
-
-.box1,
-.box4 {
-  background: red;
-  width: 200px;
-  height: 100px;
-}
-.box2,
-.box5 {
-  background: blue;
-  width: 200px;
-  height: 100px;
-}
-.box3,
-.box6 {
-  background: green;
-  width: 200px;
-  height: 100px;
-}
-.container-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0 auto;
-  height: 100px;
-  width: 200px;
-}
-
-button {
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 20px;
-  color: #fff;
-  background: #3081bf;
-  width: 200px;
-  border: none;
-  font-size: 16px;
-  font-weight: bold;
-  letter-spacing: 2px;
-  cursor: pointer;
+  height: 100%;
 }
 </style>

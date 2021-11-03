@@ -35,7 +35,7 @@
       }}</span>
 
       <span id="asterisco">(*) - Campo Obrigatório</span>
-      <BotaoCadastrarLogar />
+      <BotaoCadastrarLogar funcao="Cadastrar" />
     </form>
   </div>
 </template>

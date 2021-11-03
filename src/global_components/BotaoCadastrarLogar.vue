@@ -1,9 +1,11 @@
 <template>
-  <button>Registrar</button>
+  <button>{{funcao}}</button>
 </template>
 
 <script>
-export default {};
+export default {
+  props:['funcao']
+};
 </script>
 
 <style scoped>
