@@ -8,7 +8,8 @@
 
 Basta executar os seguintes comandos
 
-> npm i
+> npm ir 
+
 > npm run serve
 
 ## Fluxo
