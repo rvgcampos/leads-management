@@ -24,3 +24,7 @@
 1. Tela de Leads mostra o nome do usuário logado obtido a partir do localStorage
 1. Na tela de cadastrar uma nova Lead, quando a Lead é salvar com sucesso uma mensagem aparece suavemente e logo após o usuário é levado para a tela de Leads. Foi feito o uso de transactions do VueJS
 1. Nessa mesma tela de Cadastro foi feito o uso do Regex para validar os campos de Telefone e Email
+
+## Link
+
+O site pode ser acessado por [esse link](https://unruffled-golick-435afc.netlify.app/)
