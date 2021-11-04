@@ -43,7 +43,17 @@
           </form>
           <!-- OPORTUNIDADES -->
           <div class="flex-container-oportunidades">
-            <div class="oportunidades-text">Oportunidades</div>
+            <div
+              class="oportunidades-text"
+              :class="{ error: errorFormLeadOportunidades.value }"
+            >
+              Oportunidades *
+            </div>
+            <span
+              v-if="errorFormLeadOportunidades.value"
+              class="menssagem-erro"
+              >{{ errorFormLeadOportunidades.message }}</span
+            >
             <div class="flex-container-oportunidades-content">
               <div class="label-oportunidades">
                 <input type="checkbox" @click="selecionarTodos" />
@@ -131,6 +141,10 @@ export default {
         message:
           "O campo nome do e-mail não pode ser nulo e deve ser escrito corretamente",
       },
+      errorFormLeadOportunidades: {
+        value: false,
+        message: "Selecione ao menos uma oportunidade.",
+      },
     };
   },
   methods: {
@@ -147,8 +161,15 @@ export default {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       const hasEmailError = this.email_lead === "" || !re.test(this.email_lead);
 
+      const hasOportunidadeError = this.oportunidades.length === 0;
+
       // Só adiciona se não tiver erroa algum
-      if (!hasNameError && !hasPhoneError && !hasEmailError) {
+      if (
+        !hasNameError &&
+        !hasPhoneError &&
+        !hasEmailError &&
+        !hasOportunidadeError
+      ) {
         this.addLead({
           nome: this.nome_lead,
           tipo: this.tipo,
@@ -185,6 +206,11 @@ export default {
         this.errorFormLeadEmail.value = true;
       } else {
         this.errorFormLeadEmail.value = false;
+      }
+      if (hasOportunidadeError) {
+        this.errorFormLeadOportunidades.value = true;
+      } else {
+        this.errorFormLeadOportunidades.value = false;
       }
     },
 
@@ -313,7 +339,7 @@ export default {
 }
 
 .oportunidades-text {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 button {
@@ -374,7 +400,8 @@ input[type="checkbox"]:checked:after {
 }
 
 .error {
-  outline: 2px solid red;
+  border-bottom: 2px solid red;
+  /* outline: 2px solid red; */
 }
 
 .menssagem-erro {

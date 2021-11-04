@@ -102,10 +102,9 @@ export default {
         (evt.from._prevClass === "dados-confirmados-body" &&
           evt.to._prevClass === "cliente-potencial-body") ||
         (evt.from._prevClass === "reuniao-agendada-body" &&
-          evt.to._prevClass === "dados-confirmados-body") || 
-          (evt.from._prevClass === "reuniao-agendada-body" &&
-          evt.to._prevClass === "cliente-potencial-body") 
-          
+          evt.to._prevClass === "dados-confirmados-body") ||
+        (evt.from._prevClass === "reuniao-agendada-body" &&
+          evt.to._prevClass === "cliente-potencial-body")
       ) {
         console.log("Entrou no if");
         console.log(evt);
@@ -294,6 +293,8 @@ button {
   display: flex;
   flex-direction: colum;
   justify-content: center;
+  align-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .leads {
