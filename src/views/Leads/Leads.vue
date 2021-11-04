@@ -8,6 +8,7 @@
         <button class="botao-sair" @click="sair">Sair</button>
       </div>
 
+      <!-- Engloba o botão 'Novo Lead' e o texto indicando o nome do usuário -->
       <div class="flex-novo-lead">
         <button @click="cadastrarNovoLead" class="botao-novo-lead">
           Novo Lead (+)
@@ -15,6 +16,7 @@
         <span class="usuario-logado"> Bem-vindo {{ usuario_logado }} </span>
       </div>
 
+      <!-- Tabela onde ficam as Leads para serem arrastadas -->
       <div class="flex-container-tabela">
         <div class="flex-container-tabela-head">
           <div class="cliente_potencial">Cliente em Pontecial</div>
