@@ -35,4 +35,4 @@ Basta executar os seguintes comandos
 
 ## Link
 
-O site pode ser acessado por [esse link](https://blissful-pike-a75da4.netlify.app/leads)
+O site pode ser acessado por [esse link](https://hardcore-raman-f81463.netlify.app)

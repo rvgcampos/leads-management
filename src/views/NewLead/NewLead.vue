@@ -10,19 +10,21 @@
           <!-- FORMULÁRIO -->
           <form class="flex-container-form">
             <label>Nome*</label>
+            <span class="menssagem-aviso"
+              >Atenção: Nome não pode ser igual a um já cadastrado
+            </span>
             <input
               type="text"
               v-model="nome_lead"
               placeholder="Colocar nome"
               :class="{ error: errorFormLeadNome.value }"
             />
+
             <span v-if="errorFormLeadNome.value" class="menssagem-erro">{{
               errorFormLeadNome.message
             }}</span>
 
-            <span class="menssagem-erro"
-              >Atenção: Nome não pode ser igual a um já cadastrado
-            </span>
+            
 
             <label>Telefone*</label>
             <input
@@ -435,5 +437,10 @@ input[type="checkbox"]:checked:after {
 
 .fade-enter-active {
   transition: opacity 2s ease;
+}
+
+.menssagem-aviso{
+  color: blue;
+  font-size: 0.8rem;
 }
 </style>
