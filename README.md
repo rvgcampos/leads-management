@@ -8,7 +8,7 @@
 
 Basta executar os seguintes comandos
 
-> npm ir
+> npm i
 
 > npm run serve
 
