@@ -4,6 +4,13 @@
 
 ![Telas](https://github.com/rvgcampos/leads-management/blob/main/src/assets/telas.png)
 
+## Para executar
+
+Basta executar os seguintes comandos
+
+> npm i
+> npm run serve
+
 ## Fluxo
 
 1. Ao entrar no site é necessário realizar um cadastro

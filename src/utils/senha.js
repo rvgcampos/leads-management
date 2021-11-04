@@ -1,3 +1,4 @@
+// Função criada para checar  se a senha tem caractere especiais
 function hasSpecialCaractere(password) {
       const DIGITS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
       let digits_bool = false;

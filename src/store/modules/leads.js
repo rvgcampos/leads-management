@@ -5,6 +5,7 @@ const state = {
 const getters = {};
 
 const actions = {
+  // Adiciona Lead ao Local Storage
   addLead({ commit, dispatch, state }, lead) {
     let newLead = {
       ...lead,
@@ -15,6 +16,7 @@ const actions = {
     localStorage.setItem("leads", JSON.stringify(state.leads));
   },
 
+  // Recupera Leads do Local Storage
   fetchLeads({ commit }) {
     const data = localStorage.getItem("leads");
     if (data != null) {

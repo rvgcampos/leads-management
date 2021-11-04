@@ -7,6 +7,7 @@
 
         <!-- Formulário Login -->
         <form @submit.prevent="loginForm" v-else>
+          <!-- Campo Usuario -->
           <label v>Usuário <sup>*</sup></label>
           <input
             type="text"
@@ -30,6 +31,7 @@
             <i @click="cleanInputNameUser" class="far fa-trash-alt"></i>
           </span>
 
+          <!-- Campo Senha -->
           <label v>Senha <sup>*</sup></label>
           <input
             :type="typeInput"
@@ -80,9 +82,12 @@ export default {
   },
   data() {
     return {
+      // Definindo os campos do objeto de usuario
       loginUser: "",
       passwordUser: "",
+      // Estado criado para definir se mostra o componente de login ou de cadastro
       registerForm: false,
+      // Estados criados para indicar error no formulário
       errorFormUser: {
         value: false,
         message: "O campo usuário não pode ser nulo",

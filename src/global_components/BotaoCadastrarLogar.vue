@@ -1,10 +1,11 @@
 <template>
-  <button>{{funcao}}</button>
+  <button>{{ funcao }}</button>
 </template>
 
 <script>
 export default {
-  props:['funcao']
+  // 'função' é o nome que irá aparecer no botão 'Logar' ou 'Cadastrar
+  props: ["funcao"],
 };
 </script>
 

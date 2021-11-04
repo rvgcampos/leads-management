@@ -32,6 +32,7 @@ const router = new Router({
   ],
 });
 
+// Realizando a proteção de rotas
 router.beforeEach((to, from, next) => {
   let usuario_logado = localStorage.getItem("usuario_logado");
   if (usuario_logado === null) {
@@ -39,18 +40,14 @@ router.beforeEach((to, from, next) => {
   }
   console.log(usuario_logado);
 
+  // Apenas usuarios logados podem acessar paginas diferentes da raiz
   if (usuario_logado === "" && to.path !== "/") {
     next("/");
-  } else if (usuario_logado !== "" && to.path === "/") {
+  } else if (usuario_logado !== "" && to.path === "/") { // Se o usuário já estiver logado ele não poderá acessar a pagina de login
     next("/leads");
   } else {
     next();
   }
-  // else if (usuario_logado !== "" && to.path === "/") {
-  //   next("/leads");
-  // } else {
-  //   next();
-  // }
 });
 
 export default router;

@@ -1,6 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="addUserLocalStorage">
+      <!-- Campo Usuário -->
       <label> Usuário*</label>
       <input
         type="text"
@@ -12,6 +13,7 @@
         errorFormUser.message
       }}</span>
 
+      <!-- Campo Senha -->
       <label> Senha*</label>
       <input
         type="password"
@@ -23,6 +25,7 @@
         errorFormPassword.message
       }}</span>
 
+      <!-- Campo Confirmação de Senha -->
       <label> Confirmação Senha*</label>
       <input
         type="password"
@@ -62,7 +65,7 @@ export default {
       errorFormPassword: {
         value: false,
         message:
-          "O campo senha tem que ter mais de 8 caracteres e conter ao menos um caracter especial, númerico e alfanumérico ",
+          "O campo senha tem que ter mais de 8 caracteres e conter ao menos um caracter especial, númerico, letra maiuscula e letra minuscula",
       },
       errorFormConfirmPassword: {
         value: false,

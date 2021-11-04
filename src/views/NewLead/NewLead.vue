@@ -106,13 +106,17 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
+      // Definindo campos para compor o objeto lead
       nome_lead: "",
       telefone_lead: "",
       email_lead: "",
       tipo: "cliente_potencial",
       oportunidades: [],
+      // Variável criada para alterar o texto entre 'Selecionar todas' e 'Deselecionar todas'
       btnSelecionaTodos: false,
+      // Estado criado para exibir a mensagem de sucesso na tela
       mostrarMensagemSucesso: false,
+      // Estados criados para representarem se determinado campo do formulário está com erro ou não
       errorFormLeadNome: {
         value: false,
         message: "O campo nome  não pode ser nulo",
@@ -132,6 +136,7 @@ export default {
   methods: {
     ...mapActions(["addLead"]),
     novoLead() {
+      // Criando variáveis para ver se tem erro
       const hasNameError = this.nome_lead === "";
 
       const re_telefone = /^(\([0-9]{2}\))\s([9]{1})?([0-9]{4})-([0-9]{4})$/;
@@ -142,8 +147,8 @@ export default {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       const hasEmailError = this.email_lead === "" || !re.test(this.email_lead);
 
+      // Só adiciona se não tiver erroa algum
       if (!hasNameError && !hasPhoneError && !hasEmailError) {
-        console.log("chegou aq");
         this.addLead({
           nome: this.nome_lead,
           tipo: this.tipo,
@@ -152,14 +157,17 @@ export default {
           oportunidades: this.oportunidades,
         });
 
-        console.log("chegou aq tbm");
-
+        // Mostrar mensagem na tela
         this.mostrarMensagemSucesso = true;
+
+        // Depois de 2s faz o roteamento
         let self = this;
         setTimeout(function () {
           self.$router.push("leads");
         }, 2000);
       }
+
+      // Se tem erro em algum dos campos, o erro é exibido
 
       if (hasNameError) {
         this.errorFormLeadNome.value = true;
@@ -180,6 +188,7 @@ export default {
       }
     },
 
+    // Função criada para ser possivel selecionar e deselecionar todas as opções de checkbox
     selecionarTodos() {
       if (!this.btnSelecionaTodos) {
         this.btnSelecionaTodos = true;
