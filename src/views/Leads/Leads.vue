@@ -110,6 +110,40 @@ export default {
         console.log(evt);
 
         return false;
+      } else {
+        if (evt.to._prevClass === "reuniao-agendada-body") {
+          const data = localStorage.getItem("leads");
+          const leads = JSON.parse(data);
+
+          const index = leads.findIndex(
+            (item) => item.nome === evt.draggedContext.element.nome
+          );
+
+          const novaLead = evt.draggedContext.element;
+          novaLead.tipo = "reuniao_agendada";
+
+          if (index !== -1) {
+            leads.splice(index, 1, novaLead);
+          }
+
+          localStorage.setItem("leads", JSON.stringify(leads));
+        } else {
+          const data = localStorage.getItem("leads");
+          const leads = JSON.parse(data);
+
+          const index = leads.findIndex(
+            (item) => item.nome === evt.draggedContext.element.nome
+          );
+
+          const novaLead = evt.draggedContext.element;
+          novaLead.tipo = "dados_confirmados";
+
+          if (index !== -1) {
+            leads.splice(index, 1, novaLead);
+          }
+
+          localStorage.setItem("leads", JSON.stringify(leads));
+        }
       }
     },
     sair() {
@@ -126,7 +160,16 @@ export default {
     const data = localStorage.getItem("leads");
     const usuarioLogado = localStorage.getItem("usuario_logado");
     if (data != null) {
-      this.leads_potencial = JSON.parse(data);
+      const allLeads = JSON.parse(data);
+      allLeads.forEach((item) => {
+        if (item.tipo === "cliente_potencial") {
+          this.leads_potencial.push(item);
+        } else if (item.tipo === "dados_confirmados") {
+          this.leads_confirmados.push(item);
+        } else {
+          this.leads_agendados.push(item);
+        }
+      });
     }
     this.usuario_logado = usuarioLogado;
   },
