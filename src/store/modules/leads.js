@@ -7,11 +7,13 @@ const getters = {};
 const actions = {
   // Adiciona Lead ao Local Storage
   addLead({ commit, dispatch, state }, lead) {
+    state.errorSameName === false;
     let newLead = {
       ...lead,
     };
     dispatch("fetchLeads");
     console.log(newLead);
+
     commit("newLead", newLead);
     localStorage.setItem("leads", JSON.stringify(state.leads));
   },

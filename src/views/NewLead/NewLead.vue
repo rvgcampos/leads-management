@@ -20,6 +20,10 @@
               errorFormLeadNome.message
             }}</span>
 
+            <span class="menssagem-erro"
+              >Atenção: Nome não pode ser igual a um já cadastrado
+            </span>
+
             <label>Telefone*</label>
             <input
               type="text"
@@ -147,6 +151,7 @@ export default {
       },
     };
   },
+
   methods: {
     ...mapActions(["addLead"]),
     novoLead() {
