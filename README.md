@@ -1,4 +1,5 @@
 # Leads Management
 
 ## Imagens
-![Telas](https://github.com/rvgcampos/leads-management/blob/main/src/assets/telas.png | width=300)
+
+![Telas](https://github.com/rvgcampos/leads-management/blob/main/src/assets/telas.png){:height="700px" width="400px"}
