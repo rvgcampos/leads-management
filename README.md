@@ -14,7 +14,7 @@ Basta executar os seguintes comandos
 
 ## Fluxo
 
-1. Ao entrar no site é necessário realizar um cadastro
+1. Ao entrar no site é necessário realizar um cadastro, onde a senha tem que ter pelo menos um caractere especial, numérico, letra minuscula, letra maiuscula
 1. Logo após o cadastro ter sido realizado, o usuário entrará na tela de Leads automaticamente
 1. Assim sendo, o usuário pode clicar no botão 'Novo Lead (+) e ir para tela quer permitirá cadastrar um novo Lead
 1. Estando nessa tela, basta o usuário preencher os dados corretamente e clicar em 'Salvar'
