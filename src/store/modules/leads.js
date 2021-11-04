@@ -2,9 +2,7 @@ const state = {
   leads: [],
 };
 
-const getters = {
-  getLeads: (state) => state.leads,
-};
+const getters = {};
 
 const actions = {
   addLead({ commit, dispatch, state }, lead) {
@@ -12,19 +10,26 @@ const actions = {
       ...lead,
     };
     dispatch("fetchLeads");
+    console.log(newLead);
     commit("newLead", newLead);
     localStorage.setItem("leads", JSON.stringify(state.leads));
   },
 
   fetchLeads({ commit }) {
     const data = localStorage.getItem("leads");
-    const leads = JSON.parse(data);
-    commit("setLeads", leads);
+    if (data != null) {
+      const leads = JSON.parse(data);
+      commit("setLeads", leads);
+    }
   },
 };
 
 const mutations = {
-  newLead: (state, lead) => state.leads.push(lead),
+  newLead: (state, lead) => {
+    console.log("entrou no new Lead");
+    state.leads.push(lead);
+    console.log("saiu do new Lead");
+  },
   setLeads: (state, leads) => (state.leads = leads),
 };
 

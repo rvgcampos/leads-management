@@ -74,14 +74,12 @@
 
 <script>
 import draggable from "vuedraggable";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions } from "vuex";
 export default {
   components: {
     draggable,
   },
-  computed: {
-    ...mapGetters(["getLeads"]),
-  },
+
   data() {
     return {
       leads_potencial: [],
@@ -97,21 +95,26 @@ export default {
     },
     detectMove(evt) {
       if (
-        (evt.from._prevClass === "borda-vermelha" &&
-          evt.to._prevClass === "borda-verde") ||
-        (evt.from._prevClass === "borda-azul" &&
-          evt.to._prevClass === "borda-vermelha") ||
-        (evt.from._prevClass === "borda-verde" &&
-          evt.to._prevClass === "borda-azul")
+        (evt.from._prevClass === "cliente-potencial-body" &&
+          evt.to._prevClass === "reuniao-agendada-body") ||
+        (evt.from._prevClass === "dados-confirmados-body" &&
+          evt.to._prevClass === "cliente-potencial-body") ||
+        (evt.from._prevClass === "reuniao-agendada-body" &&
+          evt.to._prevClass === "dados-confirmados-body") || 
+          (evt.from._prevClass === "reuniao-agendada-body" &&
+          evt.to._prevClass === "cliente-potencial-body") 
+          
       ) {
         console.log("Entrou no if");
+        console.log(evt);
+
         return false;
       }
-      console.log(evt);
     },
     sair() {
       this.logout();
-      if (this.loggedUser === "") {
+      const usuario_logado = localStorage.getItem("usuario_logado");
+      if (usuario_logado === "") {
         this.$router.push("/");
       } else {
         console.log("Usuario nao deslogado");
@@ -121,8 +124,10 @@ export default {
   created() {
     const data = localStorage.getItem("leads");
     const usuarioLogado = localStorage.getItem("usuario_logado");
+    if (data != null) {
+      this.leads_potencial = JSON.parse(data);
+    }
     this.usuario_logado = usuarioLogado;
-    this.leads_potencial = JSON.parse(data);
   },
 };
 </script>
@@ -180,7 +185,6 @@ export default {
   height: 100%;
   background-image: url("~@/assets/elogroup.jpg");
   background-size: cover;
-  background-color: red;
 }
 
 .flex-novo-lead {
@@ -270,17 +274,19 @@ button {
 .dados-confirmados-body {
   border: 1px solid blue;
   width: 200px;
-  height: 100px;
+  height: 100%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   display: flex;
   flex-direction: colum;
   justify-content: center;
+  align-content: flex-start;
+  flex-wrap: wrap;
 }
 .reuniao-agendada-body {
   border: 1px solid green;
   width: 200px;
-  height: 100px;
+  height: 100%;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   display: flex;

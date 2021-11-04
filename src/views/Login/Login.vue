@@ -99,7 +99,7 @@ export default {
     ...mapGetters(["loggedUser"]),
   },
   methods: {
-    ...mapActions(["addUser", "login", "getUsers"]),
+    ...mapActions(["login", "getUsers"]),
 
     loginForm() {
       if (

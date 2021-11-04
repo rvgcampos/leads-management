@@ -143,6 +143,7 @@ export default {
       const hasEmailError = this.email_lead === "" || !re.test(this.email_lead);
 
       if (!hasNameError && !hasPhoneError && !hasEmailError) {
+        console.log("chegou aq");
         this.addLead({
           nome: this.nome_lead,
           tipo: this.tipo,
@@ -151,10 +152,13 @@ export default {
           oportunidades: this.oportunidades,
         });
 
-        this.mostrarMensagemSucesso = true;
+        console.log("chegou aq tbm");
 
-        setTimeout(function () {}, 2000);
-        this.$router.push("/leads");
+        this.mostrarMensagemSucesso = true;
+        let self = this;
+        setTimeout(function () {
+          self.$router.push("leads");
+        }, 2000);
       }
 
       if (hasNameError) {

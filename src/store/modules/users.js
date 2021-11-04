@@ -24,15 +24,15 @@ const actions = {
       });
 
       if (!state.alreadyRegistered) {
-        console.log("entoru no !already");
 
         commit("setUser", user);
+        commit("setLoggedUser", user.usuario);
+
         localStorage.setItem("users", JSON.stringify(state.users));
       }
     } else {
-      console.log("entoru no else");
       commit("setUser", user);
-      commit("loggedUser", user.usuario);
+      commit("setLoggedUser", user.usuario);
       localStorage.setItem("users", JSON.stringify(state.users));
     }
   },
@@ -54,8 +54,6 @@ const actions = {
         commit("setLoggedUser", user.usuario);
       }
     });
-
-    console.log(state.loggedUser);
   },
   logout({ commit }) {
     commit("cleanLoggedUser");

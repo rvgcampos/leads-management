@@ -5,7 +5,6 @@ import NewLead from "../views/NewLead/NewLead";
 import Vue from "vue";
 import Router from "vue-router";
 
-
 Vue.use(Router);
 
 const router = new Router({
@@ -35,6 +34,11 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   let usuario_logado = localStorage.getItem("usuario_logado");
+  if (usuario_logado === null) {
+    localStorage.setItem("usuario_logado", "");
+  }
+  console.log(usuario_logado);
+
   if (usuario_logado === "" && to.path !== "/") {
     next("/");
   } else if (usuario_logado !== "" && to.path === "/") {
@@ -42,6 +46,11 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+  // else if (usuario_logado !== "" && to.path === "/") {
+  //   next("/leads");
+  // } else {
+  //   next();
+  // }
 });
 
 export default router;
